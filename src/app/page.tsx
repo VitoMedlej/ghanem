@@ -88,13 +88,13 @@ import PreLoader from "@/Components/PreLoader"
 const fetchDataAndSetImgsAndSections = async () => {
   
   
-  const req = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/ge1t-images`,
+  const req = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/get-images`,
   {cache: 'no-store',next:{revalidate:0} }
 
 )
   let res = req &&  await req.json();
 
-  const SectionsReq = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/ge1t-sections`,
+  const SectionsReq = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/get-sections`,
   {cache: 'no-store',next:{revalidate:0} }
 
 )
@@ -113,7 +113,7 @@ const fetchDataAndSetImgsAndSections = async () => {
 try {
 
   // const req = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/get-data`,{ next: { revalidate: 10 } })
-  const req = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/ge1t-data`
+  const req = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/get-data`
   ,{ cache: 'no-store',next:{revalidate:0} }
 )
   // const req = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/get-data`)
