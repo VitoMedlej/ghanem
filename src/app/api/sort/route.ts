@@ -86,6 +86,8 @@ export async function GET(req :NextRequest , res : NextApiResponse) {
       ]
   }) :
   filterByCate && filterByType && filterByType !== 'null' && filterByCate !== 'null' ?
+
+
   await ProductsCollection.aggregate([
     {
       $match: filterByType && filterByCate && filterByCate !== 'null' && filterByCate !== null
@@ -94,7 +96,13 @@ export async function GET(req :NextRequest , res : NextApiResponse) {
     },
     {
       $addFields: {
-        convertedPrice: { $toDouble: '$price' }
+        convertedPrice: {
+          $cond: {
+            if: { $and: [ { $ne: ['$price', ''] }, { $ne: ['$price', undefined] }, { $ne: ['$price', 0] } ] },
+            then: { $toDouble: '$price' },
+            else: '$$REMOVE'
+          }
+        }
       }
     },
     {
@@ -113,7 +121,13 @@ export async function GET(req :NextRequest , res : NextApiResponse) {
     },
     {
       $addFields: {
-        convertedPrice: { $toDouble: '$price' }
+        convertedPrice: {
+          $cond: {
+            if: { $and: [ { $ne: ['$price', ''] }, { $ne: ['$price', undefined] }, { $ne: ['$price', 0] } ] },
+            then: { $toDouble: '$price' },
+            else: '$$REMOVE'
+          }
+        }
       }
     },
     {
@@ -133,9 +147,15 @@ export async function GET(req :NextRequest , res : NextApiResponse) {
         ? { category: filterByCate  }
         : {}
     },
-    {
+     {
       $addFields: {
-        convertedPrice: { $toDouble: '$price' }
+        convertedPrice: {
+          $cond: {
+            if: { $and: [ { $ne: ['$price', ''] }, { $ne: ['$price', undefined] }, { $ne: ['$price', 0] } ] },
+            then: { $toDouble: '$price' },
+            else: '$$REMOVE'
+          }
+        }
       }
     },
     {

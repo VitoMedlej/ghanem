@@ -55,7 +55,7 @@ const ProductCard = ({
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'space-between',
-                height: height || { xs: '350px', sm: '400px', md: '450px' },
+                height: height || { xs: '370px', sm: '400px', md: '450px' },
                 position: 'relative' // Ensure relative positioning for the button
             }}>
             <Box
@@ -106,14 +106,14 @@ const ProductCard = ({
                                 fontSize: { xs: '.9em', sm: '1em' },
                             }}>
                             {category?.toLocaleLowerCase() !== 'almost done' && newPrice ? (
-                                (price !== 0 ?<>
+                                (price !== 0 || `${price}` == '0' ? <>
                                     <s>{price}$</s> {newPrice}$
                                 </> : ''
                                 
                                 )
                             ) : (
                                 category?.toLocaleLowerCase() !== 'almost done' 
-                                && price ? `${price}$` : `${sizes && sizes[0].price}$`
+                                && price ? `${price}` == '0' ? '' : `${price}$` : `${sizes && sizes[0].price}$`
                             )}
                         </Typography>
                         {/* {sizes && sizes.length > 0 && (
@@ -149,7 +149,7 @@ const ProductCard = ({
                                 v2
                                 sx={{
                                     color: 'black !important',
-                                    margin: '0 auto',
+                                    margin: '.15em auto',
                                     position: 'absolute',
                                     bottom: '10px', // Fix the button to the bottom of the card
                                     left: '50%',
@@ -157,7 +157,7 @@ const ProductCard = ({
                                     width: '90%'
                                 }}>
                                 <Box className="flex white gap1 gap">
-                                    {sizes && sizes.length > 0 ? 'Select Size' : 'ADD'}
+                                    {sizes && sizes.length > 0 ? 'Select' : 'ADD'}
                                     <BsCartPlus color='white' fontSize='20px' />
                                 </Box>
                             </Btn>}
