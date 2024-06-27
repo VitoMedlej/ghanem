@@ -189,7 +189,7 @@ key={i}>
           sx={{padding:0,width:'100%'}}
             onClick={()=>{
               setOpen(false);
-              router.push(`/${encodeURIComponent(category?.categoryName)}/products?type=${encodeURIComponent(subcategory?.name).toLocaleLowerCase()}`)
+              router.push(`/${encodeURIComponent(category.replace(/ /g, '-')).toLowerCase()}/products?type=${subcategory?.name ? `${encodeURIComponent(subcategory.name.replace(/ /g, '-').replace(/&/g, '%26')).toLowerCase()}` : null}`)
             }}
             key={subcategory?.id}
           >
@@ -199,6 +199,10 @@ key={i}>
               </Typography>
             </ListItemButton>
           </ListItem>
+
+
+
+
         ))}
       </List>
     </AccordionDetails>
