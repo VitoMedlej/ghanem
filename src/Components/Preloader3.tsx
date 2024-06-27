@@ -6,8 +6,8 @@ import {Swiper, SwiperSlide} from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
 import { useRouter } from 'next/navigation';
-import { FreeMode, Pagination, Autoplay } from 'swiper/modules';
-import Btn from './Btn/Btn';
+import { Autoplay } from 'swiper/modules';
+// import Btn from './Btn/Btn';
 
 
 
@@ -17,8 +17,7 @@ const Preloader3 = ({res}:{res:any}) => {
  const [imgs,setImgs] = useState(
      
      [
-         {img:'https://www.ishtari.com/image/data/system_banner/10000/3600/3435/2.gif',position:'centerd'},
-  {img:'https://www.ishtari.com/image/data/system_banner/10000/3600/3437/water-sport-web-gif.gif',position:'topd'},
+         {img:'',position:'centerd'},
 
 ]
 )

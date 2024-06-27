@@ -33,8 +33,8 @@ export async function GET(req: NextRequest, res: NextApiResponse) {
 
             if (filterBySearch) {
                 baseQuery.$or = [
-                    { title: { $regex: search, $options: 'i' } },
-                    { category: { $regex: search, $options: 'i' } },
+                    { title: { $regex: search, $options: 'i' } }
+                    // { category: { $regex: search, $options: 'i' } },
                 ];
             }
 

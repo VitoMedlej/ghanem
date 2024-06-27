@@ -8,17 +8,17 @@ import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 
 export default function ProductCard({ setselectedSize, selectedSize, sizes }: any) {
-  console.log('sizes: ', sizes);
-  console.log('selectedSize: ', selectedSize);
 
+  const isEmpty = sizes?.length > 0 && sizes[0]?.size === '';
+  console.log('isEmpty: ', isEmpty);
+  if (isEmpty) return <></>;
   const handleChange = (event: any) => {
-    if (!sizes) {
+    if (!sizes || isEmpty) {
       return;
     }
 
     const weight = event.target.value;
     const option = sizes.find((option: any) => `${option?.size}` == weight);
-    console.log('option: ', option);
     setselectedSize({ size: option.size, price: option.price });
   };
 
