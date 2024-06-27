@@ -10,7 +10,7 @@ const useProducts = (products: IProduct[]) => {
 
   useEffect(() => {
     const shuffleArray = (array: IProduct[]) => {
-      let currentIndex = array.length, temporaryValue, randomIndex;
+      let currentIndex = array?.length, temporaryValue, randomIndex;
 
       // While there remain elements to shuffle...
       while (0 !== currentIndex) {
@@ -35,7 +35,9 @@ const useProducts = (products: IProduct[]) => {
       setArray3(array.slice(2*third));
     }
 
-    const shuffledProducts = shuffleArray([...products]);
+    console.log('products: ', products);
+    if (!products) return;
+    const shuffledProducts =  products && shuffleArray([...products]);
     splitArray(shuffledProducts);
   }, [products]);
 

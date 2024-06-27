@@ -1,136 +1,90 @@
-
-
-
 import client from '@/database/mongodb';
-import type {NextApiResponse}
-from 'next';
-import {NextResponse} from 'next/server'
-import {type NextRequest} from 'next/server'
+import type { NextApiResponse } from 'next';
+import { NextResponse } from 'next/server';
+import { NextRequest } from 'next/server';
 
-export async function GET(req : NextRequest, res : NextApiResponse) {
-  try {
-    const { searchParams } = new URL(req.nextUrl);
-    // const {category} = ctx.params;
-    const category = searchParams.get('category')
-    const type = searchParams.get('type')
-    const search = searchParams.get('search')
-    const page = searchParams.get('page')
-    const sort = searchParams.get('sort')
-    console.log('sort: ', sort);
-    
-    console.log('search: ', search);
+export async function GET(req: NextRequest, res: NextApiResponse) {
+    try {
+        const { searchParams } = new URL(req.nextUrl);
+        
+        // Decode and replace hyphens with spaces for category and type
+         // Decode category and type parameters
+         const category = decodeURIComponent(searchParams.get('category') || '').replace(/-/g, ' ');
+         const type = decodeURIComponent(`${searchParams.get('type')}`).replace(/-/g, ' ');
 
-    // const {page} = ctx?.searchParams;
-    // const {type} = ctx?.searchParams;
-    const pageSize = 12; // Number of items per page
-    
-    // const req = await fetch(`${server}/api/fetch-all?page=${pageNB}&category=${category
-    //     ? `${category}`.replace(/-/g, ' ')
-    //     : 'collection'}`, { cache: 'no-store' })
-    // const res = await req.json()
-    
-    
-    // const { nextUrl } = req;
-    // const category = nextUrl.searchParams.get('category');
-    // const page = nextUrl.searchParams.get('page');
-            // let page = 0;
-            // let category = null
-        // const { searchParams } = new URL(req.url);
-        // let category=  searchParams.get('category') || null
-        // let page=  searchParams.get('page') || 0
-    
-        
-        let filterByCate = !category || category === 'collection' || category === 'category' ? null : `${category}`.replace(/-/g, ' ').toLocaleLowerCase()
-        let filterByType = !type || type === null || type == 'null'  ? null : decodeURIComponent(type).toLocaleLowerCase()
-        let filterBySearch = search  && search != 'null' && search != null && search?.length > 1; 
-        
-    const ProductsCollection = await client
-        .db("GNM")
-        .collection("Products");
-    let products : any = []
-    
-    
 
-    
-    const filterQuery = () => {
-    
-      if (filterBySearch) {
-        return {
-      $or: [
-          { title: { $regex: search, $options: 'i' } },
-          { category: { $regex: search, $options: 'i' } },
-          // { description: { $regex: search, $options: 'i' } },
-      ]
-    } 
-  }
-  
-  if (filterByCate && filterByType) {
-    return { category: {
-      $regex: new RegExp(
-          `^${filterByCate?.toLocaleLowerCase().replace(/-/g, ' ')}$`,
-          'i'
-        ),
-      },
-      type : {
-        $regex: new RegExp(
-          `^${filterByType?.toLocaleLowerCase().replace(/-/g, ' ')}$`,
-          'i'
-        ),
-      }}
-      } 
-      if (filterByCate) {
-        return  {
-          category: {
-            $regex: new RegExp(
-              `^${filterByCate?.toLocaleLowerCase().replace(/-/g, ' ')}$`,
-              'i'
-              ),
-      }}
-    }
-    else {
-        return {}
-      }
-    }
-    const countQuery = await ProductsCollection.count(filterQuery());
-    console.log('filterQuery: ', filterQuery());
-    
-    const totalPages = Number(Math.ceil(countQuery / pageSize)); // Total number of pages
-    const skip = Number(page) * 12
- 
-    
-    const ProductsQuery =
-          await ProductsCollection.find(filterQuery()).sort({_id: -1})
-        .skip(Number(skip) ? Number(skip) : 0)
-        .limit(12)
-    
-    await ProductsQuery.forEach((doc : any) => {
-    
-        products.push(doc)
-        
-      });
-    if (!products || products?.length < 1  ) {
-      throw 'ERROR: Could not find any products'
-    }
-    return NextResponse.json({
-        success: true,
-        data: {
-          totalPages,
-            products
+        const search = searchParams.get('search');
+        const page = searchParams.get('page');
+        const sort = searchParams.get('sort');
+
+        const pageSize = 12; // Number of items per page
+
+        // Determine filter conditions based on decoded category and type
+        let filterByCate = !category || category === 'collection' || category === 'category' ? null : category.toLowerCase();
+        let filterByType = !type || type === 'null' ? null : type;
+
+        const filterBySearch = search && search !== 'null' && search !== null && search.length > 1;
+
+        const ProductsCollection = await client.db("GNM").collection("Products");
+        let products: any = [];
+
+        const filterQuery = () => {
+            const baseQuery: any = {};
+
+            if (filterBySearch) {
+                baseQuery.$or = [
+                    { title: { $regex: search, $options: 'i' } },
+                    { category: { $regex: search, $options: 'i' } },
+                ];
+            }
+
+            if (filterByCate && filterByType) {
+                baseQuery.category = { $regex: new RegExp(`^${filterByCate.toLowerCase()}$`, 'i') };
+                baseQuery.type = { $regex: new RegExp(`^${filterByType.toLowerCase()}$`, 'i') };
+            } else if (filterByCate) {
+                baseQuery.category = { $regex: new RegExp(`^${filterByCate.toLowerCase()}$`, 'i') };
+            }
+
+            return baseQuery;
+        };
+
+        console.log('filterQuery: ', filterQuery());
+
+        const countQuery = await ProductsCollection.countDocuments(filterQuery());
+        const totalPages = Math.ceil(countQuery / pageSize); // Total number of pages
+        const skip = Number(page) * pageSize;
+
+        const ProductsQuery = await ProductsCollection.find(filterQuery())
+            .sort({ _id: -1 })
+            .skip(skip)
+            .limit(pageSize)
+            .toArray();
+
+        ProductsQuery.forEach((doc: any) => {
+            products.push(doc);
+        });
+
+        if (!products || products.length < 1) {
+            throw 'ERROR: Could not find any products';
         }
-    });
+
+        return NextResponse.json({
+            success: true,
+            data: {
+                totalPages,
+                products,
+            },
+        });
+    } catch (error) {
+        console.error('Error in GET request:', error);
+        return NextResponse.json({
+            success: false,
+            data: {
+                products: null,
+                featuredProducts: null,
+            },
+        });
+    }
 }
 
-catch (error) {
-    console.log('error get-cate: ', error);
-    return NextResponse.json({
-        success: false,
-        data: {
-            products : null,
-            featuredProducts : null
-        }
-    });
-}
-}
-
-
-export const dynamic = 'force-dynamic'
+export const dynamic = 'force-dynamic';

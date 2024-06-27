@@ -15,7 +15,9 @@ const useCategories = () => {
   const fetchDataAndSetCategories = async () => {
     try {
       const cachedCategories = localStorage.getItem('CATES2');
-      if (cachedCategories) {
+      if (cachedCategories && cachedCategories !== 'undefined' && cachedCategories !== 'null' ) {
+        console.log('cachedCategories: ', typeof cachedCategories);
+      
         setCategories(JSON.parse(cachedCategories));
         // return; // Return early if categories are already cached
       }
@@ -27,7 +29,7 @@ const useCategories = () => {
         },
         cache: 'no-store',
   next: {
-    revalidate: 0
+    revalidate: 1000
   }
       }
       );
@@ -36,6 +38,7 @@ const useCategories = () => {
         throw new Error(`Failed to fetch data. Status: ${response.status}`);
       }
 
+      console.log('data: ', response);
       const data = await response.json();
       setCategories(data?.record);
 

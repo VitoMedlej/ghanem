@@ -113,7 +113,6 @@ const Preloader2 = ({data,totalPages}:any) => {
     //     products : [],
        
     //   })
-    console.log('options: ', options);
   return (
     <Container sx={{mt:2}} disableGutters maxWidth='lg'>
     <Box

@@ -59,7 +59,7 @@ const YourComponent = () => {
                   key={subCategory}
                   onClick={() => {
                     setOpen(false);
-                    router.push(`/${category.toLowerCase()}/products?type=${encodeURIComponent(subCategory).toLowerCase()}`);
+                    router.push(`/${category.toLowerCase()}/products?type=${encodeURIComponent(subCategory?.toLowerCase())}`);
                   }}
                 >
                   <ListItemButton>
