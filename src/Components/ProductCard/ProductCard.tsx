@@ -108,12 +108,18 @@ const ProductCard = ({
                             {category?.toLocaleLowerCase() !== 'almost done' && newPrice ? (
                                 (price !== 0 || `${price}` == '0' ? <>
                                     <s>{price}$</s> {newPrice}$
-                                </> : ''
+                                </> : 
+                                  sizes && sizes?.length > 0 && sizes[0]?.price > 0 ? `${sizes[0]?.price}$` : ''
                                 
                                 )
                             ) : (
                                 category?.toLocaleLowerCase() !== 'almost done' 
-                                && price ? `${price}` == '0' ? '' : `${price}$` : `${sizes && sizes[0].price}$`
+                                && price ? `${price}` == '0' ? 
+                                
+                                sizes && sizes?.length > 0 && sizes[0]?.price > 0 ? `${sizes[0]?.price}$` : ''
+                                
+                                
+                                : `${price}$` : `${sizes && sizes[0].price}$`
                             )}
                         </Typography>
                         {/* {sizes && sizes.length > 0 && (
