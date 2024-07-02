@@ -10,6 +10,10 @@ export async function GET(req: NextRequest, res: NextApiResponse) {
         const search = nextUrl.searchParams.get('search');
         const sort = nextUrl.searchParams.get('sort') || 'latest';
         const type = nextUrl.searchParams.get('type');
+        const pg = nextUrl.searchParams.get('page') || '1';
+        const page = parseInt(`${pg}`) || 1;
+        const limit = 50;
+        const skip = (page - 1) * limit;
 
         let sortCriteria;
         switch (sort) {
@@ -75,13 +79,15 @@ export async function GET(req: NextRequest, res: NextApiResponse) {
                         }
                     }
                 }
-                }
-                ,
+            },
                 {
                     $sort: sortCriteria
                 },
                 {
-                    $limit: 50
+                    $skip: skip
+                },
+                {
+                    $limit: limit
                 }
             ]);
 

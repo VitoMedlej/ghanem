@@ -64,7 +64,9 @@ const Category = ({categories} : {categories:any} ) => {
         cate && cate?.cateArray.map((item: any) => (
             <CategoryItem
                 key={item?.img}
-                href={`/${item?.categoryName.toLocaleLowerCase()}/products`}
+                //?type=${subcategory?.name ? `${encodeURIComponent(subcategory.name.replace(/ /g, '-').replace(/&/g, '%26')).toLowerCase()}` : null}`
+                href={`/${encodeURIComponent(item?.categoryName?.replace(/ /g, '-')).toLowerCase()}/products`}
+                // href={`/${item?.categoryName.toLocaleLowerCase()}/products`}
                 title={item?.categoryName}
                 height='200px'
                 // phone={item.phone} // Assuming phone is a property of item
