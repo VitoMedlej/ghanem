@@ -68,7 +68,7 @@ React.useEffect(()=>{
 
         <Grid item xs={12}>
           <TextField
-            required
+            // required
             id="email1"
             name="email"
             label="Email "
