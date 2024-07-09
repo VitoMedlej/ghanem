@@ -38,6 +38,7 @@ const Preloader2 = ({data,totalPages}:any) => {
     }, [data])
     
     const {category} = useParams() 
+    console.log('category: ', category);
     const searchParams = useSearchParams();
     const type =  searchParams.get('type')
     const sort =  searchParams.get('sort')
@@ -51,7 +52,7 @@ const Preloader2 = ({data,totalPages}:any) => {
 
 
     const fetchData = async (val:number) => {
-    const url =  `/api/get-cate?category=${category ? category : 'all'}&search=${newValue ? encodeURIComponent(newValue) : null}&page=${Number(val - 1) || 0}&type=${type ? type : null}&sort=${options.sort ? options.sort : null}`  ;
+    const url =  `/api/get-cate?category=${category ? encodeURIComponent(category) : 'all'}&search=${newValue ? encodeURIComponent(newValue) : null}&page=${Number(val - 1) || 0}&type=${type ? type : null}&sort=${options.sort ? options.sort : null}`  ;
     const req = await fetch(`${server}${url}`,{cache:'no-store', next: { revalidate: 0 }})
     const res = await req.json()
         
@@ -79,7 +80,7 @@ const Preloader2 = ({data,totalPages}:any) => {
         
             
         })
-        const url =   `/api/sort?min=${options.price[0]}&max=${options.price[1]}&type=${'all'}&category=${'collection'}`  ;
+        const url =   `/api/sort?min=${options.price[0]}&max=${options.price[1]}&type=${'all'}&category=${encodeURIComponent(category)}`  ;
         console.log('url: ', url);
         const req = await fetch(`${server}${url}`,{cache:'no-store', next: { revalidate: 0 }})
         const res = await req.json()
@@ -88,7 +89,7 @@ const Preloader2 = ({data,totalPages}:any) => {
             setProducts(res?.data?.products ? res?.data?.products : [])
             return
     }
-        const url =   `/api/sort?search=${encodeURIComponent(`${newValue}`)}&min=${options.price[0]}&max=${options.price[1]}&type=${options.type}&category=${options?.category}&sort=${options?.sort}`  ;
+        const url =   `/api/sort?search=${encodeURIComponent(`${newValue}`)}&min=${options.price[0]}&max=${options.price[1]}&type=${options.type}&category=${encodeURIComponent(category)}&sort=${options?.sort}`  ;
         console.log('url: ', url);
         // router.push('')
        

@@ -67,7 +67,7 @@ const ProductCard = ({
                 }}>
                 <img
                     src={images
-                        ? `${images[0]}/-/resize/600/`
+                        ? `${images[0]}/-/resize/500/`
                         : ''}
                     alt="Product image"
                     className="img contain" />

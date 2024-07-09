@@ -6,10 +6,15 @@ import { type NextRequest } from 'next/server';
 export async function GET(req: NextRequest, res: NextApiResponse) {
     try {
         const { nextUrl } = req;
-        const category = nextUrl.searchParams.get('category');
+        const category = decodeURIComponent(nextUrl.searchParams.get('category') || '').replace(/-/g, ' ');
+        const type = decodeURIComponent(`${nextUrl.searchParams.get('type')}`).replace(/-/g, ' ');
+        // const category = nextUrl.searchParams.get('category');
         const search = nextUrl.searchParams.get('search');
+
+
+
         const sort = nextUrl.searchParams.get('sort') || 'latest';
-        const type = nextUrl.searchParams.get('type');
+        // const type = nextUrl.searchParams.get('type');
         const pg = nextUrl.searchParams.get('page') || '1';
         const page = parseInt(`${pg}`) || 1;
         const limit = 50;

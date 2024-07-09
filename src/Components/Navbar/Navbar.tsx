@@ -188,7 +188,7 @@ sx={{display:{xs:'none',md:'flex'}}}
 }}>
     <img
         className='img cover'
-        src={`https://ucarecdn.com/5796ba3f-8471-4ae4-9da0-9009623d470d/logosmall.PNG`}
+        src={`https://ucarecdn.com/5796ba3f-8471-4ae4-9da0-9009623d470d/-/resize/200/`}
         alt="ghanem trading logo"/>
 </Box>
 </Link>
@@ -254,7 +254,7 @@ className='absolute '
 }}>
     <img
         className='img contain'
-        src={`https://ucarecdn.com/5796ba3f-8471-4ae4-9da0-9009623d470d/logosmall.PNG`}
+        src={`https://ucarecdn.com/5796ba3f-8471-4ae4-9da0-9009623d470d/-/resize/200/`}
         alt="ghanem trading logo"/>
 </Box>
 </Link>

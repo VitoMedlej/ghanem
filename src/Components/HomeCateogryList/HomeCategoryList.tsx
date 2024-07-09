@@ -70,7 +70,7 @@ const Category = ({categories} : {categories:any} ) => {
                 title={item?.categoryName}
                 height='200px'
                 // phone={item.phone} // Assuming phone is a property of item
-                img={item.img}
+                img={`${item?.img}-/resize/250/`}
             />
         ))
     ))}

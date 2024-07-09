@@ -11,7 +11,7 @@ export const metadata = {
     title: 'Ghanem Trading Lebanon | Electronics & Home Appliances',
     description: `Discover top-quality electronics and home appliances at Ghanem Trading in Lebanon. From smartphones to refrigerators, find the latest innovations from trusted brands.`,
     icons: {
-        icon: `https://ucarecdn.com/77556735-08f8-4344-95b9-bd17bca69a11/WhatsAppImage20240429at094244_75617fcf.jpg`
+        icon: `https://ucarecdn.com/77556735-08f8-4344-95b9-bd17bca69a11/-/resize/200/`
     }
 }
 

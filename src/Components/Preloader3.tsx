@@ -81,7 +81,7 @@ useEffect(() => {
                                 className={`img contain  ${item?.position} 
                                 `}
                                 // ${item?.className}
-                                src={`${item.img}`}
+                                src={`${item.img}-/resize/800/`}
                                 alt="Main Carousel Image"/>
            
                         </Box>
