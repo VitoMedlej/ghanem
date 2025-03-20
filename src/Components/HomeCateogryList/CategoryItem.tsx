@@ -14,8 +14,8 @@ const CategoryItem = ({img, desktopHeight,phone,height, href, title} : any) => {
             sx={{
                 display:'flex',
             // display : {xs:phone ? 'flex' : 'none',sm:'flex'},
-           width:{xs:'45%',sm:'200px'},
-           height:{xs:'45vw',sm:'200px'},
+           width:{xs:'23%',sm:'200px'},
+           height:{xs:'23vw',sm:'200px'},
             position: 'relative',
             margin: '5px',
             cursor: 'pointer',
@@ -31,7 +31,7 @@ const CategoryItem = ({img, desktopHeight,phone,height, href, title} : any) => {
                 borderRadius: '0%'
             }}>
                 
-                <img  className='img   contain' src={`${img}`} alt="Category Image"/>
+                <img  className='img   contain' src={`${img}-/resize/400/`} alt="Category Image"/>
             </Box>
             {/* <Box className=' auto center text-center'>
                 <Typography fontSize='.8em'>

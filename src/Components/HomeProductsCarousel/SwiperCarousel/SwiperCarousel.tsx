@@ -36,12 +36,12 @@ const SwiperCarousel = ({data, delay} : {
           
               freeMode={true}
               autoplay={{
-                delay:  delay || 1000,
-                disableOnInteraction: true,
+                delay:  delay || 2000,
+                disableOnInteraction: false,
               }}
               navigation={false}
             spaceBetween={10}
-            slidesPerView={2}
+            slidesPerView={2.1}
             slidesPerGroup={1}
 
             pagination={false}
@@ -54,17 +54,17 @@ const SwiperCarousel = ({data, delay} : {
 
             breakpoints={{
                 200 : {
-                    slidesPerView:2,
+                    slidesPerView:2.1,
                 },
                 540: {
-                    slidesPerView: 3,
+                    slidesPerView: 3.1,
                   },
                   
                   1024: {
-                    slidesPerView: 4,
+                    slidesPerView: 4.1,
                   },
                   1640: {
-                    slidesPerView: 5,
+                    slidesPerView: 5.1,
                   },
                 
                

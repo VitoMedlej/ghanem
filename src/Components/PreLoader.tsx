@@ -17,8 +17,10 @@ import useProducts from '@/Hooks/useProducts'
 
 const 
 PreLoader = ({data,featuredProducts,brands,resImages,vids,SectionsRes}:any) => {
+  console.log('data: ', data);
   const {categories} = useCategoriesContext();
-  const { array1, array2, array3 } = useProducts(data)
+  const { array1, array2, array3 , array4 } = useProducts(data)
+  console.log('array1: ', array1);
   // let videosArray = vids && vids[0]?.videos?.videos || null
   // const router= useRouter();
   // const {text} = useLanguage()
@@ -85,13 +87,19 @@ PreLoader = ({data,featuredProducts,brands,resImages,vids,SectionsRes}:any) => {
 
 }
 
-<HomeProductCollection  
+<HomeProductsCarousel
+delay={2500}
+category='all'
+Collectiontitle=''
+data={array1}
+/>
+{/* <HomeProductCollection  
           products={array2}
           pt={1}
           // category={'collection'}
           sectionTitle={'Browse Collections'}
           // delay={2500}
-        />
+        /> */}
 
 
 {/* {
@@ -123,7 +131,7 @@ PreLoader = ({data,featuredProducts,brands,resImages,vids,SectionsRes}:any) => {
        
   
        <HomeProductsCarousel  
-          data={array1}
+          data={array2}
           category={'collection'}
           Collectiontitle={'Our Latest Collections'}
           delay={2500}
@@ -131,10 +139,23 @@ PreLoader = ({data,featuredProducts,brands,resImages,vids,SectionsRes}:any) => {
 
       {/* <Perks/> */}
 
-      <HomeProductCollection  
-          products={array3}
+      <HomeProductsCarousel  
+          delay={2500}
+
+          data={array3}
+          category={`collection`}
           // category={'collection'}
-          sectionTitle={'Shop Products'}
+          Collectiontitle={'Shop Products'}
+          // delay={3000}
+        />
+
+         <HomeProductsCarousel  
+          delay={2500}
+
+          data={array4}
+          category={`collection`}
+          // category={'collection'}
+          Collectiontitle={'Shop Products'}
           // delay={3000}
         />
    
@@ -187,7 +208,7 @@ brands && brands[0] && brands[0]?.BrandsArray.map((i: {img:string})=>{
             return  <Box key={i?.img} sx={{width:{xs:'30%',sm:'22%',md:'22%'},maxWidth:'220px'}}>
             <Box>
               <img 
-               src={i?.img} alt="" className="img" />
+               src={`${i?.img}-/resize/400/`} alt="" className="img" />
               </Box>
               
 

@@ -66,7 +66,7 @@ onClick={()=>router.push(`/${category || 'collection'}/products`)}
                 <SwiperCarousel
                 delay={delay}
                 
-                data={data && data.length > 0 && data?.slice(0,25) || []}/>
+                data={data && data.length > 0 && data?.slice(0,35) || []}/>
             </Box>
 
    

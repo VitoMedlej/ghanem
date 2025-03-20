@@ -5,10 +5,6 @@ import PreLoader from "@/Components/PreLoader"
 // import { server } from "@/Utils/Server"
 // import { IProduct } from "@/Types/Types"
 // import { server } from "@/Utils/Server"
-// import { Box,  Container, Typography } from "@mui/material"
-// import { useEffect, useState } from "react"
-// https://www..com/view_video.php?viewkey=ph637450f5f16fd
-// export default  function Home() {
   export default async function Home() {
 //   const [data,setData] = useState< {
 //     products: IProduct[] | never[] ; 
@@ -89,13 +85,13 @@ const fetchDataAndSetImgsAndSections = async () => {
   
   
   const req = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/get-images`,
-  {cache: 'no-store',next:{revalidate:0} }
+  // {cache: 'no-store',next:{revalidate:0} }
 
 )
   let res = req &&  await req.json();
 
   const SectionsReq = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/get-sections`,
-  {cache: 'no-store',next:{revalidate:0} }
+  // {cache: 'no-store',next:{revalidate:0} }
 
 )
   let SectionsRes = SectionsReq &&  await SectionsReq.json();
@@ -114,7 +110,8 @@ try {
 
   // const req = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/get-data`,{ next: { revalidate: 10 } })
   const req = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/get-data`
-  ,{ cache: 'no-store',next:{revalidate:0} }
+  // ,{ next:{revalidate:10} }
+  // ,{ cache: 'no-store',next:{revalidate:0} }
 )
   // const req = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/get-data`)
   let res = req &&  await req.json();
@@ -138,7 +135,7 @@ try {
         brands={brands}
         // data={null}
         featuredProducts={res?.data?.featuredProducts}
-        data={res?.data?.products}
+        data={res?.data}
         />
        )
 }
@@ -149,7 +146,6 @@ catch (e) {
    )
 
 }
-    
 
 
 }
