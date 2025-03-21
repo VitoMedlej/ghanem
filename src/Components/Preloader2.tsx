@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, FC, FormEvent } from "react";
 import { Box, Container, Pagination, Typography } from "@mui/material";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { server } from "@/Utils/Server";
@@ -12,24 +12,31 @@ interface Preloader2Props {
   totalPages: number;
 }
 
-const Preloader2: React.FC<Preloader2Props> = ({ data, totalPages: initialTotalPages }) => {
-  console.log('data: ', data);
+const Preloader2: FC<Preloader2Props> = ({ data, totalPages: initialTotalPages }) => {
   const router = useRouter();
-  const [newValue, setNewValue] = useState<string>(''); // current input
-  // currentSearch holds the query that was last submitted
-  const [currentSearch, setCurrentSearch] = useState<string>('');
+  const [newValue, setNewValue] = useState<string>("");
+  const [currentSearch, setCurrentSearch] = useState<string>("");
   const [products, setProducts] = useState<IProduct[]>(data || []);
   const [pageCount, setPageCount] = useState<number>(initialTotalPages);
   const [options, setOptions] = useState({
     price: [1, 100000],
-    sort: 'latest',
-    type: 'All',
-    category: 'All',
+    sort: "latest",
+    type: "All",
+    category: "All",
   });
 
   const { category } = useParams();
   const searchParams = useSearchParams();
-  const typeParam = searchParams.get('type');
+  const typeParam = searchParams.get("type");
+  const searchQuery = searchParams.get("search");
+
+  // Initialize currentSearch from URL param on load
+  useEffect(() => {
+    if (searchQuery) {
+      setCurrentSearch(searchQuery);
+      setNewValue(searchQuery);
+    }
+  }, [searchQuery]);
 
   useEffect(() => {
     setProducts(data || []);
@@ -37,49 +44,50 @@ const Preloader2: React.FC<Preloader2Props> = ({ data, totalPages: initialTotalP
 
   const fetchData = async (page: number) => {
     const url = `/api/get-cate?category=${
-      category ? encodeURIComponent(category) : 'all'
+      category ? encodeURIComponent(category) : "all"
     }&search=${
       currentSearch ? encodeURIComponent(currentSearch) : null
     }&page=${page - 1}&type=${typeParam ? typeParam : null}&sort=${options.sort ? options.sort : null}`;
-    const req = await fetch(`${server}${url}`, { cache: 'no-store', next: { revalidate: 0 } });
+    const req = await fetch(`${server}${url}`, { cache: "no-store", next: { revalidate: 0 } });
     const res = await req.json();
     setProducts(res?.data?.products || []);
     setPageCount(res?.data?.totalPages || 1);
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       window.scrollTo(0, 0);
     }
   };
 
-  const handleSubmit = async (reset?: boolean, e?: React.FormEvent) => {
+  const handleSubmit = async (reset?: boolean, e?: FormEvent) => {
     if (e) e.preventDefault();
     if (reset) {
-      setNewValue('');
-      setCurrentSearch(''); // reset the persisted search
+      setNewValue("");
+      setCurrentSearch("");
       setOptions({
         price: [1, 100000],
-        sort: 'latest',
-        type: 'all',
-        category: 'collection',
+        sort: "latest",
+        type: "all",
+        category: "collection",
       });
-      const url = `/api/sort?min=${options.price[0]}&max=${options.price[1]}&type=all&category=${encodeURIComponent(category)}`;
-      const req = await fetch(`${server}${url}`, { cache: 'no-store', next: { revalidate: 0 } });
+      const url = `/api/sort?min=${options.price[0]}&max=${options.price[1]}&type=all&category=${encodeURIComponent(
+        category
+      )}`;
+      const req = await fetch(`${server}${url}`, { cache: "no-store", next: { revalidate: 0 } });
       const res = await req.json();
       setProducts(res?.data?.products || []);
       return;
     }
-    // When search is submitted, store the query into currentSearch so pagination uses it.
     setCurrentSearch(newValue);
     const url = `/api/sort?search=${encodeURIComponent(newValue)}&min=${options.price[0]}&max=${
       options.price[1]
     }&type=${options.type}&category=${encodeURIComponent(category)}&sort=${options.sort}`;
-    const req = await fetch(`${server}${url}`, { cache: 'no-store', next: { revalidate: 0 } });
+    const req = await fetch(`${server}${url}`, { cache: "no-store", next: { revalidate: 0 } });
     const res = await req.json();
     setProducts(res?.data?.products || []);
   };
 
   return (
     <Container sx={{ mt: 2 }} disableGutters maxWidth="lg">
-      <Box className="flex items-center wrap" sx={{ mb: 4, width: '100%', minHeight: '100px' }}>
+      <Box className="flex items-center wrap" sx={{ mb: 4, width: "100%", minHeight: "100px" }}>
         <FilterSection
           handleSubmit={handleSubmit}
           options={options}
@@ -102,7 +110,7 @@ const Preloader2: React.FC<Preloader2Props> = ({ data, totalPages: initialTotalP
               category={i.category}
               stock={i.stock}
               sizes={i.sizes || null}
-              width={{ xs: '47%', sm: '32%' }}
+              width={{ xs: "47%", sm: "32%" }}
               inStock={i.inStock}
             />
           ))
@@ -111,9 +119,7 @@ const Preloader2: React.FC<Preloader2Props> = ({ data, totalPages: initialTotalP
         )}
       </Box>
       <Pagination
-        onChange={(e, val) => {
-          fetchData(val);
-        }}
+        onChange={(e, val) => fetchData(val)}
         sx={{ my: 3 }}
         count={pageCount > 1 ? pageCount : 1}
         className="flex center"
